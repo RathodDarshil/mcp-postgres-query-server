@@ -5,8 +5,7 @@ import { Pool } from "pg";
 
 // Create a connection pool
 const pool = new Pool({
-    connectionString:
-        "postgresql://postgres:5zTnTh.]HhOWK_x5~JY<H2)c_F-9@lr-production.cb6qegwc6n9k.ap-south-1.rds.amazonaws.com:5432/postgres", // You'll need to set this environment variable
+    connectionString: "DB_CONNECTION_STRING", // You'll need to set this environment variable
     ssl: {
         rejectUnauthorized: false, // Use this if you're getting SSL certificate errors
     },
