@@ -31,16 +31,6 @@ npm install
 npm run build
 ```
 
-## Usage
-
-Run the server by providing your PostgreSQL connection string as a command line argument:
-
-```bash
-node dist/index.js "postgresql://username:password@hostname:port/database"
-```
-
-The server will validate that only read-only queries (SELECT) are executed against your database.
-
 ## Connecting to Claude Desktop
 
 You can configure Claude Desktop to automatically launch and connect to the MCP server:
