@@ -3,9 +3,19 @@ import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js"
 import { z } from "zod";
 import { Pool } from "pg";
 
+// Get database connection string from command line arguments
+const args = process.argv.slice(2);
+const connectionString = args[0] || process.env.DATABASE_URL;
+
+if (!connectionString) {
+    console.error("Error: Database connection string not provided.");
+    console.error("Usage: node dist/index.js <database_connection_string>");
+    process.exit(1);
+}
+
 // Create a connection pool
 const pool = new Pool({
-    connectionString: "DB_CONNECTION_STRING", // You'll need to set this environment variable
+    connectionString,
     ssl: {
         rejectUnauthorized: false, // Use this if you're getting SSL certificate errors
     },
@@ -13,7 +23,7 @@ const pool = new Pool({
 
 // Create an MCP server
 const server = new McpServer({
-    name: "Demo",
+    name: "Postgres Query Server",
     version: "1.0.0",
 });
 

@@ -15,7 +15,7 @@ This project implements a Model Context Protocol (MCP) server that provides:
 
 -   Node.js (v14 or later)
 -   npm (comes with Node.js)
--   PostgreSQL database (connection details in .env file)
+-   PostgreSQL database (connection details provided via command line)
 
 ## Installation
 
@@ -31,15 +31,15 @@ npm install
 npm run build
 ```
 
-## Configuration
+## Usage
 
-Create a `.env` file in the root directory with the following content:
+Run the server by providing your PostgreSQL connection string as a command line argument:
 
+```bash
+node dist/index.js "postgresql://username:password@hostname:port/database"
 ```
-DATABASE_URL=postgresql://username:password@hostname:port/database
-```
 
-Replace the connection string with your PostgreSQL database credentials.
+The server will validate that only read-only queries (SELECT) are executed against your database.
 
 ## Connecting to Claude Desktop
 
@@ -58,26 +58,32 @@ You can configure Claude Desktop to automatically launch and connect to the MCP 
     "mcpServers": {
         "postgres-query": {
             "command": "node",
-            "args": ["/path/to/your/mcp-postgres-query-server/dist/index.js"]
+            "args": [
+                "/path/to/your/mcp-postgres-query-server/dist/index.js",
+                "postgresql://username:password@hostname:port/database"
+            ]
         }
     }
 }
 ```
 
 3. Replace `/path/to/your/` with the actual path to your project directory.
-
-4. Save the file and restart Claude Desktop. The MCP server should now appear in the MCP server selection dropdown in Settings.
+4. Replace the PostgreSQL connection string with your actual database credentials.
+5. Save the file and restart Claude Desktop. The MCP server should now appear in the MCP server selection dropdown in Settings.
 
 ### Example Configuration
 
-Here's a complete example of a configuration file with lr-replica-query:
+Here's a complete example of a configuration file with postgres-query:
 
 ```json
 {
     "mcpServers": {
-        "lr-replica-query": {
+        "postgres-query": {
             "command": "node",
-            "args": ["/Users/darshilrathod/mcp-servers/mcp-postgres-query-server/dist/index.js"]
+            "args": [
+                "/Users/darshilrathod/mcp-servers/mcp-postgres-query-server/dist/index.js",
+                "postgresql://user:password@localhost:5432/mydatabase"
+            ]
         }
     }
 }
@@ -148,6 +154,7 @@ To modify the server's behavior, you can:
 -   Connection to the database uses SSL
 -   Query timeout prevents resource exhaustion
 -   No write operations are permitted
+-   Database credentials are passed directly via command line arguments, not stored in files
 
 ## License
 
